@@ -18,7 +18,7 @@ const execFileAsync = promisify(execFile);
 let client: LanguageClient | undefined;
 
 export async function activate(context: vscode.ExtensionContext) {
-  const output = vscode.window.createOutputChannel("Nestor");
+	const output = vscode.window.createOutputChannel("Nestor", { log: true });
   context.subscriptions.push(output);
 
   let command: string;
@@ -26,11 +26,11 @@ export async function activate(context: vscode.ExtensionContext) {
     command = await resolveServerPath(context, output);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    output.appendLine(`Failed to locate the language server: ${message}`);
+    output.error(`Failed to locate the language server: ${message}`);
     vscode.window.showErrorMessage(`Nestor: ${message}`);
     return;
   }
-  output.appendLine(`Using language server at ${command}`);
+  output.info(`Using language server at ${command}`);
 
   const serverOptions: ServerOptions = { command, args: [] };
   const clientOptions: LanguageClientOptions = {
@@ -48,7 +48,7 @@ export async function deactivate() {
 
 async function resolveServerPath(
   context: vscode.ExtensionContext,
-  output: vscode.OutputChannel,
+  output: vscode.LogOutputChannel,
 ): Promise<string> {
   // A user-configured path always wins (e.g. a local dev build).
   const configured = vscode.workspace
@@ -73,7 +73,7 @@ async function resolveServerPath(
     // Offline or rate limited: fall back to any previously installed version.
     const installed = await findInstalled(storageDir);
     if (installed) {
-      output.appendLine(`Update check failed (${err}); using ${installed}`);
+      output.info(`Update check failed (${err}); using ${installed}`);
       return installed;
     }
     throw err;
@@ -87,7 +87,7 @@ interface Release {
 
 async function installLatest(
   storageDir: string,
-  output: vscode.OutputChannel,
+  output: vscode.LogOutputChannel,
 ): Promise<string> {
   const assetName = getAssetName();
 
@@ -123,7 +123,7 @@ async function installLatest(
       title: `Nestor: downloading ${release.tag_name}`,
     },
     async () => {
-      output.appendLine(`Downloading ${asset.browser_download_url}`);
+      output.info(`Downloading ${asset.browser_download_url}`);
       const archive = await download(asset.browser_download_url);
       const checksumText = await (
         await fetchOk(checksumAsset.browser_download_url)
