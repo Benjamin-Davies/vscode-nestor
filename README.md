@@ -7,3 +7,7 @@ To achieve this goal, Nestor uses [Tree Sitter](https://tree-sitter.github.io/tr
 Nestor is named after the [Kea](https://en.wikipedia.org/wiki/Kea) (*Nestor Notabilis*), a curious and clever green parrot found in the Southern Alps of New Zealand. It was inspired by [OpenGrok](https://oracle.github.io/opengrok/)'s naivety and flexibility.
 
 For more information, see https://github.com/Benjamin-Davies/nestor
+
+## Usage
+
+Install the Nestor C LSP extension: https://marketplace.visualstudio.com/items?itemName=Benjamin-Davies.vscode-nestor
