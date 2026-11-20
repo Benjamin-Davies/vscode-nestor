@@ -2,6 +2,7 @@
   "name": "vscode-nestor",
   "displayName": "vscode-nestor",
   "description": "C LSP that takes a silly amount of shortcuts",
+  "repository": "https://github.com/Benjamin-Davies/vscode-nestor",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.146.0"
